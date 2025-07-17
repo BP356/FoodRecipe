@@ -22,12 +22,12 @@ export default function CustomRecipesScreen(props) {
   const recipe = props.route.params; // recipe passed from previous screen
   // const route = useRoute();
   // const { recipe } = route.params || {}; // Pass the  object as a parameter
-  console.log('recipe', recipe);
+  // console.log('recipe', recipe);
 
   const favoriteRecipe = useSelector(
     (state) => state.favorites.favoriteRecipes
   );
-  console.log('favoriteRecipe from custom', favoriteRecipe);
+  // console.log('favoriteRecipe from custom', favoriteRecipe);
 
   const isFavourite = favoriteRecipe.includes(recipe);
 
@@ -51,8 +51,10 @@ export default function CustomRecipesScreen(props) {
     >
       {/* Recipe Image */}
       <View style={styles.imageContainer} testID="imageContainer">
-        {recipe.image && (
+        {recipe.image ? (
           <Image source={{ uri: recipe.image }} style={styles.recipeImage} />
+        ) : (
+          <div style={styles.recipeImage} />
         )}
       </View>
       <View
@@ -76,7 +78,11 @@ export default function CustomRecipesScreen(props) {
       <View style={styles.contentContainer} testID="contentContainer">
         <Text style={styles.recipeTitle}>{recipe.title}</Text>
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Content</Text>
+          <Text style={styles.sectionTitle}>Ingredients</Text>
+          <Text style={styles.contentText}>{recipe.ingredients}</Text>
+        </View>
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Instructions</Text>
           <Text style={styles.contentText}>{recipe.description}</Text>
         </View>
       </View>
