@@ -58,7 +58,7 @@ export default function RecipesFormScreen({ route, navigation }) {
         onChangeText={setIngredients}
         multiline={true}
         numberOfLines={4}
-        style={[styles.input, { height: hp(20), textAlignVertical: "top" }]}
+        style={[styles.input, { textAlignVertical: "top" }]}
       />
       <TextInput
         placeholder="Description"
@@ -66,7 +66,7 @@ export default function RecipesFormScreen({ route, navigation }) {
         onChangeText={setDescription}
         multiline={true}
         numberOfLines={4}
-        style={[styles.input, { height: hp(20), textAlignVertical: "top" }]}
+        style={[styles.input, { textAlignVertical: "top" }]}
       />
       <TouchableOpacity onPress={saveRecipe} style={styles.saveButton}>
         <Text style={styles.saveButtonText}>Save recipe</Text>
