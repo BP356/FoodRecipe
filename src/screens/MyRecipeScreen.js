@@ -61,15 +61,13 @@ export default function MyRecipeScreen() {
   return (
     <View style={styles.container}>
       {/* Back Button */}
-      <View style={styles.topButtonsContainer}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Text style={styles.backButtonText}>{"Back"}</Text>
-        </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Text style={styles.backButtonText}>{"Back"}</Text>
+      </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleAddRecipe} style={styles.addButton}>
-          <Text style={styles.addButtonText}>Add New recipe</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={handleAddRecipe} style={styles.addButton}>
+        <Text style={styles.addButtonText}>Add New recipe</Text>
+      </TouchableOpacity>
 
       {loading ? (
         <ActivityIndicator size="large" color="#f59e0b" />
@@ -112,13 +110,6 @@ const styles = StyleSheet.create({
     padding: wp(4),
     backgroundColor: "#F9FAFB",
   },
-  topButtonsContainer: {
-    width: "100%",
-    position: "absolute",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
   backButton: {
     marginBottom: hp(1.5),
   },
@@ -132,7 +123,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 5,
     width: 300,
-    marginRight: 50,
+    // marginLeft: 500,
     marginBottom: hp(2),
   },
   addButtonText: {
@@ -142,7 +133,6 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     paddingBottom: hp(2),
-    marginTop: hp(6),
     height: 'auto',
     display: 'flex',
     alignItems: 'center',
@@ -157,12 +147,12 @@ const styles = StyleSheet.create({
     marginTop: hp(5),
   },
   recipeCard: {
-    width: 400, // Make recipe card width more compact
+    width: wp(90), // Make recipe card width more compact
     height: 300, // Adjust the height of the card to fit content
     backgroundColor: "#fff",
-    padding: 20,
+    padding: wp(3),
     borderRadius: 8,
-    margin: 20,
+    marginBottom: hp(2),
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 4,
