@@ -13,17 +13,14 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import Recipe from "../components/recipes";
 
 export default function FavoriteScreen() {
   const navigation = useNavigation();
 
   // Assuming you have a similar structure for recipes in your Redux store
   const favoriteRecipes = useSelector((state) => state.favorites);
-  const favoriteRecipesList = favoriteRecipes?.favoriterecipes || [];
-  console.log(favoriteRecipes.favoriterecipes);
-  console.log('favoriteRecipesList',favoriteRecipesList);
-  
-  
+  const favoriteRecipesList = favoriteRecipes?.favoriteRecipes || [];
 
   if (favoriteRecipesList.length === 0) {
     return (
@@ -50,7 +47,7 @@ export default function FavoriteScreen() {
   return (
     <>
       {/* Heading */}
-      <View testID="FavoriteRecipes">
+      <View>
         <Text
           style={{ fontSize: hp(3.8), marginTop: hp(4), marginLeft: 20 }}
           className="font-semibold text-neutral-600"
@@ -58,7 +55,7 @@ export default function FavoriteScreen() {
           My Favorite Recipes
         </Text>
       </View>
-    
+
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={{
@@ -73,7 +70,11 @@ export default function FavoriteScreen() {
       >
         <Text style={{ color: "#fff" }}>Go back</Text>
       </TouchableOpacity>
-    
+
+      <Recipe
+        // categories={categories}
+        foods={favoriteRecipesList}
+      />
     </>
   );
 }

@@ -1,33 +1,65 @@
 import { View, Text, Pressable, Image, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import React from "react";
-import {widthPercentageToDP as wp, heightPercentageToDP as hp,} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp, } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 
-export default function Recipe({ categories, foods }) {
+export default function Recipe({ foods }) {
   const navigation = useNavigation();
 
-  const renderItem = ({ item, index }) => (
-<ArticleCard item={item} index={index} navigation={navigation} />
-  );
+  const renderItem = ({ item, index }) => {
+    if (item.idFood)
+      return (<FoodCard item={item} index={index} navigation={navigation} />);
+    if (item.title)
+      return (<CustomFoodCard item={item} index={index} navigation={navigation} />);
+  };
 
   return (
     <View style={styles.container}>
-      <View testID="recipesDisplay">
-            
+      <View>
+        <FlatList
+          data={foods}
+          keyExtractor={(item) => item.idFood}
+          renderItem={renderItem}
+          numColumns={2} />
       </View>
     </View>
   );
 }
 
-const ArticleCard = ({ item, index, navigation }) => {
+const FoodCard = ({ item, index, navigation }) => {
   return (
-    <View
-      style={[styles.cardContainer, { paddingLeft: 20, paddingRight: 15}]} testID="articleDisplay"
-    >
-   
+    <View style={[styles.cardContainer, { paddingLeft: 20, paddingRight: 15 }]}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("RecipeDetail", { ...item })}>
+        <Image source={{ uri: item.recipeImage }} style={[styles.articleImage, { height: index % 3 === 0 ? hp(25) : hp(35) }]} />
+        <Text style={styles.articleText}>
+          {item.recipeName.length > 20 ? item.recipeName.slice(0, 20) + "..." : item.recipeName}
+        </Text>
+        <Text style={styles.articleDescription}>
+          {item.cookingDescription.length > 20 ? item.cookingDescription.slice(0, 20) + "..." : item.cookingDescription}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
+
+const CustomFoodCard = ({ item, index, navigation }) => {
+  return (
+    <View style={[styles.cardContainer, { paddingLeft: 20, paddingRight: 15 }]}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("CustomRecipesScreen", { ...item })}>
+        <Image source={{ uri: item.image }} style={[styles.articleImage, { height: index % 3 === 0 ? hp(25) : hp(35) }]} />
+        <Text style={styles.articleText}>
+          {item.title.length > 20 ? item.title.slice(0, 20) + "..." : item.title}
+        </Text>
+        <Text style={styles.articleDescription}>
+          {item.description.length > 20 ? item.description.slice(0, 20) + "..." : item.description}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 
 const styles = StyleSheet.create({
   container: {
@@ -50,7 +82,6 @@ const styles = StyleSheet.create({
   },
   articleImage: {
     width: "100%",
-   
     borderRadius: 35,
     backgroundColor: "rgba(0, 0, 0, 0.05)", // bg-black/5
   },

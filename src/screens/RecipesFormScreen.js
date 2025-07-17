@@ -1,18 +1,35 @@
-import { View,Text,TextInput,TouchableOpacity,Image,StyleSheet,} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, } from "react-native";
 import React, { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {widthPercentageToDP as wp,heightPercentageToDP as hp,} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp, } from "react-native-responsive-screen";
 
 export default function RecipesFormScreen({ route, navigation }) {
-  const { recipeToEdit, recipeIndex, onrecipeEdited } = route.params || {};
-  const [title, setTitle] = useState(recipeToEdit ? recipeToEdit.title : "");
-  const [image, setImage] = useState(recipeToEdit ? recipeToEdit.image : "");
-  const [description, setDescription] = useState(
-    recipeToEdit ? recipeToEdit.description : ""
-  );
+  const { recipe, index, onRecipeEdited } = route.params || {};
+  const [title, setTitle] = useState(recipe ? recipe.title : "");
+  const [image, setImage] = useState(recipe ? recipe.image : "");
+  const [description, setDescription] = useState(recipe ? recipe.description : "");
 
-  const saverecipe = async () => {
- 
+  const saveRecipe = async () => {
+    try {
+      const newRecipe = { title, image, description };
+      const existingRecipes = await AsyncStorage.getItem("customRecipes");
+      const recipes = existingRecipes ? JSON.parse(existingRecipes) : [];
+
+      // update recipe
+      if (recipe) {
+        recipes[index] = newRecipe;
+      }
+      // add a new recipe
+      else {
+        recipes.push(newRecipe);
+      }
+      await AsyncStorage.setItem("customRecipes", JSON.stringify(recipes));
+      if (onRecipeEdited)
+        onRecipeEdited();  // notify the edit
+      navigation.goBack();
+    } catch (error) {
+      console.error("Error saving the recipe: ", error);
+    }
   };
 
   return (
@@ -42,7 +59,7 @@ export default function RecipesFormScreen({ route, navigation }) {
         numberOfLines={4}
         style={[styles.input, { height: hp(20), textAlignVertical: "top" }]}
       />
-      <TouchableOpacity onPress={saverecipe} style={styles.saveButton}>
+      <TouchableOpacity onPress={saveRecipe} style={styles.saveButton}>
         <Text style={styles.saveButtonText}>Save recipe</Text>
       </TouchableOpacity>
     </View>
@@ -63,7 +80,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 300,
-    height:200,
+    height: 200,
     margin: wp(2),
   },
   imagePlaceholder: {
